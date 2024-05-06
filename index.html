@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="pt-br">
 
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
     <title>Formulário de Cadastro</title>
     <style>
         body {
@@ -122,7 +125,6 @@
             background-clip: padding-box;
         }
 
-
         input[type="text"]:focus,
         input[type="password"]:focus,
         input[type="email"]:focus,
@@ -133,7 +135,6 @@
             outline: 0;
             box-shadow: 0 0 0 0.2rem rgba(4, 87, 177, 0.25);
         }
-
 
         iframe {
             width: 100%;
@@ -176,6 +177,82 @@
         .btn:hover {
             background-color: #45a049;
         }
+
+        #menu-principal,
+        #menu-btn-edicao {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+
+        #outdoors {
+            list-style: disclosure-closed;
+            padding-left: 0;
+        }
+
+        #outdoors li {
+            color: black;
+            font-size: 18px;
+        }
+
+        .btn-menu {
+            display: block;
+            width: 150px;
+            /* Ajuste a largura conforme necessário */
+            margin: 10px 10px;
+            /* Centraliza o botão horizontalmente e adiciona margem superior e inferior */
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-menu:hover {
+            background-color: #45a049;
+        }
+
+        .outdoor-item {
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .outdoor-info {
+            font-size: 16px;
+            display: flex;
+            color: black;
+            flex-wrap: wrap;
+            gap: 8px 5%;
+        }
+
+        .outdoor-info p {
+            margin: 5px 0;
+            width: 20%;
+        }
+
+        .outdoor-info strong {
+            font-weight: bold;
+        }
+
+        #form-container,
+        #lista-outdoor,
+        #menu-principal {
+            display: none;
+        }
+
+        .outdoor-selecionado {
+            /* Estilo para destacar o outdoor selecionado, por exemplo: */
+            border: 2px solid blue;
+        }
     </style>
 </head>
 
@@ -183,7 +260,7 @@
     <div class="container">
 
         <header>
-            <img class="logo" src="logotela.jpg" alt="Logo da Empresa">
+            <img class="logo" src="https://i.ibb.co/4Y1xdnz/logotela.png" alt="Logo da Empresa">
         </header>
 
         <div>
@@ -199,8 +276,45 @@
             </form>
         </div>
 
+        <div id="menu-principal">
+            <button id="btn-cadastrar" class="btn-menu">Cadastrar</button>
+            <button id="btn-alterar" class="btn-menu">Alterar</button>
+            <button id="btn-deletar" class="btn-menu">Deletar</button>
+        </div>
+
+        <div id="lista-outdoor">
+            <h2>Lista de Outdoors</h2>
+            <ul id="outdoors">
+                <!-- Lista de outdoors aqui... -->
+            </ul>
+        </div>
+
+        <div id="form-edicao" style="display: none;">
+            <h2>Editar Outdoor</h2>
+            <form id="formulario-edicao">
+                <!-- Adicione os campos de edição dos dados do outdoor -->
+                <input type="hidden" id="id-edicao" name="id">
+                <label for="endereco-edicao">Endereço:</label>
+                <input type="text" id="endereco-edicao" name="endereco">
+                <label for="bairro-edicao">Bairro:</label>
+                <input type="text" id="bairro-edicao" name="bairro">
+                <label for="localidade-edicao">Localidade:</label>
+                <input type="text" id="localidade-edicao" name="localidade">
+                <label for="altura-edicao">Altura:</label>
+                <input type="text" id="altura-edicao" name="altura">
+                <label for="largura-edicao">Largura:</label>
+                <input type="text" id="largura-edicao" name="largura">
+                <label for="informacoes-edicao">Informações:</label>
+                <textarea id="informacoes-edicao" name="informacoes"></textarea>
+                <div id="menu-btn-edicao">
+                    <button class="btn" type="button" onclick="salvarEdicao()">Salvar</button>
+                    <button class="btn" type="button" onclick="cancelarEdicao()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- <div id="form-container"> -->
         <div id="form-container">
-            <!-- <div id="form-container" style="display: none;"> -->
             <h2>Formulário de Cadastro</h2>
             <form id="cadastro-form" method="POST" action="http://localhost:3000/cadastro">
 
@@ -219,16 +333,11 @@
                     <label for="email">E-mail:</label>
                     <input type="email" id="email" name="email" required>
 
-                    <label for="cpf">CPF:</label>
-                    <input type="number" id="cpf" name="cpf" required>
-
                     <label for="data-nascimento">Data de Nascimento:</label>
                     <input type="date" id="data-nascimento" name="data-nascimento" required>
 
                     <label for="telefone">Telefone:</label>
                     <input type="tel" id="telefone" name="telefone" required>
-                    <label for="dadosBancarios">Dados bancários/pix:</label>
-                    <input type="text" id="dadosBancarios" name="dadosBancarios" required>
                 </div>
 
                 <div class="form-group">
@@ -237,11 +346,11 @@
                     <div class="form-group">
 
                         <label>O outdoor é:</label>
-                        <label for="estatico"><input type="radio" id="estatico" name="tipo-outdoor" value="estatico">
+                        <label for="estatico"><input type="radio" id="estatico" name="tipo" value="estatico">
                             Estático</label>
-                        <label for="dinamico"><input type="radio" id="dinamico" name="tipo-outdoor" value="dinamico">
+                        <label for="dinamico"><input type="radio" id="dinamico" name="tipo" value="dinamico">
                             Dinâmico</label>
-                        <label for="led"><input type="radio" id="led" name="tipo-outdoor" value="led"> LED</label>
+                        <label for="led"><input type="radio" id="led" name="tipo" value="led"> LED</label>
                     </div>
                     <label for="endereco">Endereço:</label>
                     <input type="text" id="endereco" name="endereco">
@@ -249,32 +358,19 @@
                     <label for="bairro">Bairro:</label>
                     <input type="text" id="bairro" name="bairro">
 
-                    <label for="numero">Número:</label>
-                    <input type="text" id="numero" name="numero">
-
                     <label for="localidade">Localidade:</label>
                     <select id="localidade" name="localidade">
                         <option value="sobradinho">Sobradinho</option>
                         <option value="outro">Outro</option>
                     </select>
 
-                    <label for="referencia">Ponto de Referência:</label>
-                    <input type="text" id="referencia" name="referencia">
+                    <label for="altura">Altura (metros):</label>
+                    <input type="text" id="altura" name="altura" pattern="\d+(\,\d{1,2})?"
+                        title="Informe um número seguido de uma vírgula e até duas casas decimais (ex: 10,40)" required>
 
-                    <label for="cep">CEP:</label>
-                    <input type="text" id="cep" name="cep">
-
-                    <label for="dimensoes-alt">Altura:</label>
-                    <input type="text" id="dimensoes-alt" name="dimensoes-alt">
-
-                    <label for="dimensoes-larg">Largura:</label>
-                    <input type="text" id="dimensoes-larg" name="dimensoes-larg">
-
-                    <label for="dimensoes-comp">Comprimento:</label>
-                    <input type="text" id="dimensoes-comp" name="dimensoes-comp">
-
-                    <label for="valor-maximo">Valor Máximo (R$):</label>
-                    <input type="number" id="valor-maximo" name="valor-maximo">
+                    <label for="largura">Largura (metros):</label>
+                    <input type="text" id="largura" name="largura" pattern="\d+(\,\d{1,2})?"
+                        title="Informe um número seguido de uma vírgula e até duas casas decimais (ex: 10,40)" required>
 
                     <label for="foto">Foto do Outdoor:</label>
                     <input type="file" id="foto" name="foto">
@@ -299,16 +395,233 @@
             </form>
         </div>
     </div>
-
     <script>
-        const loginForm = document.getElementById('login-form');
-        const formContainer = document.getElementById('form-container');
+        document.getElementById('login-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Evita que o formulário seja enviado
 
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            formContainer.style.display = 'block';
-            loginForm.reset();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Verifica de login, exibir o menu e lista de outdoor
+            if (username === 'usuario' && password === 'senha') {
+                document.getElementById('menu-principal').style.display = 'flex';
+                document.getElementById('lista-outdoor').style.display = 'block';
+            } else {
+                alert('Usuário ou senha incorretos');
+            }
         });
+
+        // Event listeners para os botões do menu principal
+        document.getElementById('btn-cadastrar').addEventListener('click', function () {
+            // Exibe o formulário de cadastro e esconde os outros elementos
+            document.getElementById('form-container').style.display = 'block';
+            document.getElementById('lista-outdoor').style.display = 'none';
+        });
+
+        document.getElementById('btn-alterar').addEventListener('click', function () {
+            document.getElementById('lista-outdoor').style.display = 'none';
+            preencherFormularioEdicao();
+        });
+
+        document.getElementById('btn-deletar').addEventListener('click', function () {
+            deletarOutdoor()
+        });
+
+        // Função para buscar os dados dos outdoors do servidor
+        function buscarOutdoors() {
+            fetch('/outdoors')
+                .then(response => response.json())
+                .then(data => {
+                    const outdoorsList = document.getElementById('outdoors');
+                    // Limpa a lista de outdoors
+                    outdoorsList.innerHTML = '';
+                    // Insere os dados dos outdoors na lista
+                    data.forEach(outdoor => {
+                        const listItem = document.createElement('div'); // Criando um elemento div para cada item
+                        listItem.classList.add('outdoor-item'); // Adicionando uma classe CSS ao elemento div
+                        listItem.innerHTML = `
+                <div class="outdoor-info">
+                    <p><strong>ID:</strong> ${outdoor.idTB_Outdoor}</p>
+                    <p><strong>Endereço:</strong> ${outdoor.Endereço}</p>
+                    <p><strong>Bairro:</strong> ${outdoor.Bairro}</p>
+                    <p><strong>Localidade:</strong> ${outdoor.Localidade}</p>
+                    <p><strong>Tipo:</strong> ${outdoor.Tipo}</p>
+                    <p><strong>Altura:</strong> ${outdoor.Altura}</p>
+                    <p><strong>Largura:</strong> ${outdoor.Largura}</p>
+                    <p><strong>Disponibilidade:</strong> ${outdoor.Disponibilidade}</p>
+                    <p><strong>Informações:</strong> ${outdoor.Informacoes}</p>
+                </div>
+            `;
+                        // Adicionando o evento de clique para selecionar o outdoor
+                        listItem.onclick = function () {
+                            selecionarOutdoor(this);
+                        };
+                        outdoorsList.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error('Erro ao buscar outdoors:', error));
+        }
+
+        // Chamando a função buscarOutdoors quando a página é carregada
+        window.onload = buscarOutdoors;
+
+        // Adiciona um event listener para o evento input nos campos de altura e largura
+        document.getElementById('altura').addEventListener('input', formatarNumero);
+        document.getElementById('largura').addEventListener('input', formatarNumero);
+
+        // Função para formatar o número inserido pelo usuário
+        function formatarNumero(event) {
+            // Pega o valor atual do campo
+            let valor = event.target.value;
+
+            // Remove todos os caracteres não numéricos exceto a vírgula
+            valor = valor.replace(/[^\d,]/g, '');
+
+            // Formata a vírgula para que apareça apenas uma vez
+            valor = valor.replace(/,/g, match => match === ',' ? ',' : '');
+
+            // Atualiza o valor do campo
+            event.target.value = valor;
+        }
+
+        let outdoorSelecionado = null; // Variável para armazenar o outdoor selecionado
+
+        function selecionarOutdoor(outdoorItem) {
+            // Verifica se o outdoor clicado é o mesmo que já está selecionado
+            if (outdoorItem === outdoorSelecionado) {
+                // Se sim, remove a seleção
+                outdoorItem.classList.remove('outdoor-selecionado');
+                outdoorSelecionado = null;
+            } else {
+                // Se não, remove a seleção do outdoor anteriormente selecionado (se houver)
+                if (outdoorSelecionado !== null) {
+                    outdoorSelecionado.classList.remove('outdoor-selecionado');
+                }
+
+                // Define o novo outdoor selecionado
+                outdoorSelecionado = outdoorItem;
+
+                // Adiciona a classe de seleção ao outdoor clicado
+                outdoorItem.classList.add('outdoor-selecionado');
+
+                // Aqui você pode fazer o que quiser com o outdoor selecionado
+                console.log('Outdoor selecionado:', outdoorSelecionado.querySelector('.outdoor-info').innerText);
+            }
+        }
+
+        function deletarOutdoor() {
+            const outdoorSelecionado = document.querySelector('.outdoor-selecionado'); // Obtém o elemento do outdoor selecionado
+            if (outdoorSelecionado) {
+                const id = outdoorSelecionado.querySelector('p:nth-child(1)').innerText.split(':')[1].trim();
+                const dadosDoOutdoor = {
+                    id: id
+                };
+                fetch('/deletar', {
+                    method: 'POST',
+                    body: JSON.stringify(dadosDoOutdoor),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            // Operação de deleção bem-sucedida
+                            console.log('Deleção de outdoor realizada com sucesso.');
+                            // Atualiza a lista de outdoors
+                            buscarOutdoors();
+                        } else {
+                            // Operação de deleção falhou
+                            console.error('Falha ao deletar outdoor:', response.statusText);
+                        }
+                    })
+                    .catch(error => console.error('Erro ao deletar outdoor:', error));
+            } else {
+                console.log('Nenhum outdoor selecionado.');
+            }
+        }
+
+        // Função para preencher o formulário de edição com os dados do outdoor selecionado
+        function preencherFormularioEdicao() {
+            const outdoorSelecionado = document.querySelector('.outdoor-selecionado'); // Obtém o elemento do outdoor selecionado
+            console.log(outdoorSelecionado)
+            if (outdoorSelecionado) {
+                // Extrair os dados do outdoor selecionado
+                const id = outdoorSelecionado.querySelector("p:nth-of-type(1)").innerText.split(": ")[1];
+                const endereco = outdoorSelecionado.querySelector("p:nth-of-type(2)").innerText.split(": ")[1];
+                const bairro = outdoorSelecionado.querySelector("p:nth-of-type(3)").innerText.split(": ")[1];
+                const localidade = outdoorSelecionado.querySelector("p:nth-of-type(4)").innerText.split(": ")[1];
+                const altura = outdoorSelecionado.querySelector("p:nth-of-type(6)").innerText.split(": ")[1];
+                const largura = outdoorSelecionado.querySelector("p:nth-of-type(7)").innerText.split(": ")[1];
+                const informacoes = outdoorSelecionado.querySelector("p:nth-of-type(9)").innerText.split(": ")[1];
+
+                document.getElementById("id-edicao").value = id;
+                document.getElementById("endereco-edicao").value = endereco;
+                document.getElementById("bairro-edicao").value = bairro;
+                document.getElementById("localidade-edicao").value = localidade;
+                document.getElementById("altura-edicao").value = altura;
+                document.getElementById("largura-edicao").value = largura;
+                document.getElementById("informacoes-edicao").value = informacoes;
+
+                // Exibir o formulário de edição
+                document.getElementById("form-edicao").style.display = "block";
+            } else {
+                console.log('Nenhum outdoor selecionado.');
+            }
+        }
+
+        // Função para cancelar a edição
+        function cancelarEdicao() {
+            document.getElementById("form-edicao").style.display = "none";
+            document.getElementById('lista-outdoor').style.display = 'block';
+        }
+
+        // Função para salvar a edição
+        function salvarEdicao() {
+            // Obter os dados do formulário de edição
+            const id = parseInt(document.getElementById("id-edicao").value, 10);
+            const novoEndereco = document.getElementById("endereco-edicao").value;
+            const novoBairro = document.getElementById("bairro-edicao").value;
+            const novaLocalidade = document.getElementById("localidade-edicao").value;
+            const novaAltura = document.getElementById("altura-edicao").value;
+            const novaLargura = document.getElementById("largura-edicao").value;
+            const novasInformacoes = document.getElementById("informacoes-edicao").value;
+
+            // Construir o objeto com os novos dados do outdoor
+            const dadosEdicao = {
+                id: id,
+                endereco: novoEndereco,
+                bairro: novoBairro,
+                localidade: novaLocalidade,
+                altura: novaAltura,
+                largura: novaLargura,
+                informacoes: novasInformacoes
+            };
+
+            // Enviar os dados para o backend através de uma solicitação POST
+            fetch("/alterar", {
+                method: "POST",
+                body: JSON.stringify(dadosEdicao),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Operação de edição bem-sucedida
+                        console.log("Edição de outdoor realizada com sucesso.");
+                        // Ocultar o formulário de edição
+                        document.getElementById("form-edicao").style.display = "none";
+                        // Exibe novamente a lista de outdoors
+                        document.getElementById('lista-outdoor').style.display = 'block';
+                        // Atualizar a lista de outdoors
+                        buscarOutdoors();
+                    } else {
+                        // Operação de edição falhou
+                        console.error("Falha ao editar outdoor:", response.statusText);
+                    }
+                })
+                .catch(error => console.error("Erro ao editar outdoor:", error));
+        }
     </script>
 </body>
 
