@@ -1,52 +1,53 @@
--- Cria o banco de dados
+-- Cria o banco de dados find_outdoor
 CREATE DATABASE IF NOT EXISTS find_outdoor;
 
--- Seleciona o banco de dados
+-- Seleciona o banco de dados find_outdoor
 USE find_outdoor;
 
--- Cria a tabela TB_Proprietario
-CREATE TABLE IF NOT EXISTS TB_Proprietario (
-    idProprietario INT AUTO_INCREMENT PRIMARY KEY,
+-- Tabela TB_Proprietário
+CREATE TABLE tb_proprietário (
+    idProprietário INT PRIMARY KEY AUTO_INCREMENT,
     Nome VARCHAR(45) NOT NULL,
-    CPF BIGINT NOT NULL,
     Telefone VARCHAR(45) NOT NULL,
-    Email VARCHAR(45) NOT NULL,
-    Dados_Banc_PIX VARCHAR(45) NOT NULL
+    E_mail VARCHAR(45) NOT NULL
 );
 
--- Cria a tabela TB_Aluguel
-CREATE TABLE IF NOT EXISTS TB_Aluguel (
-    idTB_Aluguel INT AUTO_INCREMENT PRIMARY KEY,
-    MesAno VARCHAR(45) NOT NULL,
+-- Tabela TB_Aluguel
+CREATE TABLE tb_aluguel (
+    idTB_Aluguel INT PRIMARY KEY AUTO_INCREMENT,
+    Mês_Ano VARCHAR(45) NOT NULL,
     Valor FLOAT NOT NULL,
-    DataInicio DATETIME NOT NULL,
-    DataFim DATETIME NOT NULL
+    Data_Início DATETIME NOT NULL,
+    Data_Fim DATETIME NOT NULL
 );
 
--- Cria a tabela TB_Intermediario
-CREATE TABLE IF NOT EXISTS TB_Intermediario (
-    idTB_Intermediario INT AUTO_INCREMENT PRIMARY KEY,
+-- Tabela TB_Intermediário
+CREATE TABLE tb_intermediário (
+    idTB_Intermediário INT PRIMARY KEY AUTO_INCREMENT,
     Nome VARCHAR(45) NOT NULL,
     Telefone VARCHAR(45) NOT NULL,
     CNPJ VARCHAR(45) NOT NULL,
-    Email VARCHAR(45) NOT NULL
+    E_mail VARCHAR(45) NOT NULL
 );
 
--- Cria a tabela TB_Outdoor
-CREATE TABLE IF NOT EXISTS TB_Outdoor (
-    idTB_Outdoor INT AUTO_INCREMENT PRIMARY KEY,
-    Codigo INT NOT NULL,
-    Endereco VARCHAR(45) NOT NULL,
+-- Tabela TB_Outdoor
+CREATE TABLE tb_outdoor (
+    idTB_Outdoor INT PRIMARY KEY AUTO_INCREMENT,
+    Endereço VARCHAR(45) NOT NULL,
+    Bairro VARCHAR(45) NOT NULL,
+    Localidade VARCHAR(45) NOT NULL,
     Tipo VARCHAR(45) NOT NULL,
-    Dimensoes VARCHAR(45) NOT NULL,
-    Disponibilidade VARCHAR(45) NOT NULL
+    Altura VARCHAR(45) NOT NULL,
+    Largura VARCHAR(45) NOT NULL,
+    Informacoes VARCHAR(200) NOT NULL,
+    Disponibilidade VARCHAR(45) NOT NULL DEFAULT 'Disponível'
 );
 
--- Cria a tabela TB_Locador
-CREATE TABLE IF NOT EXISTS TB_Locador (
-    idTB_Locador INT AUTO_INCREMENT PRIMARY KEY,
+-- Tabela TB_Locador
+CREATE TABLE tb_locador (
+    idTB_Locador INT PRIMARY KEY AUTO_INCREMENT,
     Nome VARCHAR(45) NOT NULL,
     Telefone VARCHAR(45) NOT NULL,
-    Email VARCHAR(45) NOT NULL,
+    E_mail VARCHAR(45) NOT NULL,
     CPF VARCHAR(45) NOT NULL
 );
